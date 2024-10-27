@@ -1,0 +1,1 @@
+sudo docker exec -it mongo_healthchain mongosh --username admin --password admin --authenticationDatabase admin localhost:27017

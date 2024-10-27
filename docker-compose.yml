@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: prismagraphql/mongo-single-replica:5.0.3  # Use the specified MongoDB image
+    container_name: mongo_healthchain  # Name of the container
+    ports:
+      - "27017:27017"  # Map port 27017 from host to container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "admin"  # MongoDB username
+      MONGO_INITDB_ROOT_PASSWORD: "admin"  # MongoDB password
+    volumes:
+      - mongo_data:/data/db  # Use a named volume for data persistence
+
+volumes:
+  mongo_data:  # Define a named volume
