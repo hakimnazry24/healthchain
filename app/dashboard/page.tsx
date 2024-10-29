@@ -2,7 +2,6 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import React from "react";
-import { patients } from "@/util/mockdata";
 import { IoHomeOutline } from "react-icons/io5";
 import { IoPeopleOutline } from "react-icons/io5";
 import { IoDocumentTextOutline } from "react-icons/io5";
@@ -86,7 +85,6 @@ const Dashboard = () => {
   }, []);
 
   const handleSearchPatient = (query: string) => {
-
     patients?.forEach((patient) => {
       if (patient.name.toLowerCase().includes(query.toLowerCase())) {
         setFilteredPatients([patient]);
@@ -241,27 +239,32 @@ const Dashboard = () => {
       {/* main content */}
       <div className="col-span-3">
         <h1 className="text-3xl font-semibold mb-5">Patients</h1>
-        <table className="w-full rounded-3xl">
-          <thead className="bg-secondary">
-            <tr>
-              <th>Name</th>
-              <th>Age</th>
-              <th>Sex</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Insurance</th>
-            </tr>
-          </thead>
-          <tbody>
-            {query.length === 0
-              ? patients?.map((patient) => (
-                  <TableRow key={patient.id} patient={patient} />
-                ))
-              : filteredPatients?.map((patient) => (
-                  <TableRow key={patient.id} patient={patient} />
-                ))}
-          </tbody>
-        </table>
+        {patients?.length! <= 0 && filteredPatients?.length! <= 0 ? (
+          <p className="text-left font-semibold text-xl">No record added</p>
+        ) : (
+          <table className="w-full rounded-3xl">
+            <thead className="bg-secondary">
+              <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Sex</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Insurance</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {query.length === 0
+                ? patients?.map((patient) => (
+                    <TableRow key={patient.id} patient={patient} />
+                  ))
+                : filteredPatients?.map((patient) => (
+                    <TableRow key={patient.id} patient={patient} />
+                  ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
