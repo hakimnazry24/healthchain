@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Patient {
-  id        String @id @map("_id")
+  id        String @id @map("_id") @default(uuid())
   name      String
   age       Int
   sex       String

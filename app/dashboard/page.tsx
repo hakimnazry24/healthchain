@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import React from "react";
 import { patients } from "@/util/mockdata";
 import { IoHomeOutline } from "react-icons/io5";
@@ -19,6 +19,12 @@ import {
 
 const Dashboard = () => {
   const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const [Name, setName] = useState("");
+  const [Age, setAge] = useState(0);
+  const [sex, setSex] = useState("Male");
+  const [email, setEmail] = useState("");
+  const [Phone, setPhone] = useState("");
+  const [insurance, setInsurance] = useState("");
 
   const openDialog = () => {
     setIsOpenDialog(true);
@@ -26,6 +32,31 @@ const Dashboard = () => {
 
   const closeDialog = () => {
     setIsOpenDialog(false);
+  };
+
+  const handleCreatePatient = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append("name", Name);
+      formData.append("age", Age.toString());
+      formData.append("sex", sex);
+      formData.append("email", email);
+      formData.append("phone", Phone);
+      formData.append("insurance", insurance);
+
+      const res = await fetch("/api/patient/create", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        location.reload();
+      }
+    } catch (error: any) {
+      console.error(`Something wrong when creating patient : ${error.message}`);
+    }
   };
 
   return (
@@ -68,7 +99,7 @@ const Dashboard = () => {
           <div className="fixed inset-0 flex w-screen items-center justify-center p-4 ">
             <DialogPanel className="max-w-3xl space-y-4 border bg-secondary p-12">
               <DialogTitle className="font-bold">Add new patient</DialogTitle>
-              <form action="">
+              <form onSubmit={handleCreatePatient}>
                 <div className="grid grid-cols-3 items-center mb-3">
                   <label htmlFor="name">Name</label>
                   <input
@@ -76,6 +107,7 @@ const Dashboard = () => {
                     name="name"
                     id="name"
                     className="rounded-md p-2 bg-primary font-semibold w-full col-span-2"
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
 
@@ -86,6 +118,7 @@ const Dashboard = () => {
                     name="age"
                     id="age"
                     className="rounded-md p-2 bg-primary font-semibold w-28 col-span-2"
+                    onChange={(e) => setAge(parseInt(e.target.value))}
                   />
                 </div>
 
@@ -95,6 +128,7 @@ const Dashboard = () => {
                     name="sex"
                     id="sex"
                     className="rounded-md p-2 bg-primary font-semibold w-full col-span-2"
+                    onChange={(e) => setSex(e.target.value)}
                   >
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -108,6 +142,7 @@ const Dashboard = () => {
                     name="email"
                     id="email"
                     className="rounded-md p-2 bg-primary font-semibold w-full col-span-2"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
@@ -118,13 +153,17 @@ const Dashboard = () => {
                     name="insurance"
                     id="insurance"
                     className="rounded-md p-2 bg-primary font-semibold w-full col-span-2"
+                    onChange={(e) => setInsurance(e.target.value)}
                   />
                 </div>
                 <div className="flex justify-end gap-4 mt-10">
-                  <button type="submit" onClick={() => setIsOpenDialog(false)}>
+                  <button type="button" onClick={() => setIsOpenDialog(false)}>
                     Cancel
                   </button>
-                  <button type="button" onClick={() => setIsOpenDialog(false)} className="bg-primary p-2 rounded-md font-semibold">
+                  <button
+                    type="submit"
+                    className="bg-primary p-2 rounded-md font-semibold"
+                  >
                     Create patient
                   </button>
                 </div>
