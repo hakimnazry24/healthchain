@@ -27,6 +27,10 @@ const Dashboard = () => {
   const [Phone, setPhone] = useState("");
   const [insurance, setInsurance] = useState("");
   const [patients, setPatients] = useState<Patient[] | null>([]);
+  const [query, setQuery] = useState("");
+  const [filteredPatients, setFilteredPatients] = useState<Patient[] | null>(
+    []
+  );
 
   const openDialog = () => {
     setIsOpenDialog(true);
@@ -56,7 +60,7 @@ const Dashboard = () => {
       if (res.ok) {
         location.reload();
       }
-    } catch (error: any) {  
+    } catch (error: any) {
       console.error(`Something wrong when creating patient : ${error.message}`);
     }
   };
@@ -80,6 +84,19 @@ const Dashboard = () => {
   useEffect(() => {
     handleFetchPatients();
   }, []);
+
+  const handleSearchPatient = (query: string) => {
+
+    patients?.forEach((patient) => {
+      if (patient.name.toLowerCase().includes(query.toLowerCase())) {
+        setFilteredPatients([patient]);
+      }
+    });
+  };
+
+  useEffect(() => {
+    handleSearchPatient(query);
+  }, [query]);
 
   return (
     <div className="grid grid-cols-4 m-10 gap-x-5">
@@ -217,6 +234,7 @@ const Dashboard = () => {
           id="search_patient"
           className="bg-secondary rounded-lg p-3 w-full mt-8"
           placeholder="Search for patient"
+          onChange={(e) => setQuery(e.target.value)}
         />
       </div>
 
@@ -235,9 +253,13 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {patients?.map((patient) => (
-              <TableRow key={patient.id} patient={patient} />
-            ))}
+            {query.length === 0
+              ? patients?.map((patient) => (
+                  <TableRow key={patient.id} patient={patient} />
+                ))
+              : filteredPatients?.map((patient) => (
+                  <TableRow key={patient.id} patient={patient} />
+                ))}
           </tbody>
         </table>
       </div>
