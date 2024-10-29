@@ -1,8 +1,9 @@
 "use server";
 
 import prisma from "@/prisma/db";
-import { createSession } from "./session";
+import { createSession, deleteSession } from "./session";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 export const signIn = async (username: string, password: string) => {
   let isAuth = false;
@@ -22,9 +23,9 @@ export const signIn = async (username: string, password: string) => {
 
       if (user) {
         await createSession(user.id);
-        
+
         isAuth = true;
-        return { ok: true };
+        return { ok: true, user: user };
       }
     } else {
       return { ok: false };
@@ -37,15 +38,5 @@ export const signIn = async (username: string, password: string) => {
 };
 
 export const logOut = async (id: string) => {
-  try {
-    const logOut = await prisma.session.delete({
-      where: {
-        userId: id,
-      },
-    });
-
-    redirect("/");
-  } catch (error: any) {
-    console.error(`Failed to log out : ${error.message}`);
-  }
+  await deleteSession(id);
 };

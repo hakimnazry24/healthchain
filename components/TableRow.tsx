@@ -1,3 +1,5 @@
+"use client"
+
 import { patients } from "@/util/mockdata";
 import { Patient } from "@prisma/client";
 import React, { FormEvent } from "react";

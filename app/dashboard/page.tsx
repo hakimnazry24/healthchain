@@ -4,10 +4,6 @@ import { FormEvent, useEffect, useState } from "react";
 import React from "react";
 import { IoHomeOutline } from "react-icons/io5";
 import { IoPeopleOutline } from "react-icons/io5";
-import { IoDocumentTextOutline } from "react-icons/io5";
-import { BsCreditCard2Back } from "react-icons/bs";
-import { TbReportAnalytics } from "react-icons/tb";
-import { CiSettings } from "react-icons/ci";
 import TableRow from "@/components/TableRow";
 import {
   Description,
@@ -51,7 +47,7 @@ const Dashboard = () => {
       formData.append("phone", Phone);
       formData.append("insurance", insurance);
 
-      const res = await fetch("/api/patient/create", {
+      const res = await fetch("/api/patient", {
         method: "POST",
         body: formData,
       });
@@ -108,7 +104,7 @@ const Dashboard = () => {
           <IoPeopleOutline />
           Patients
         </div>
-        <div className="flex flex-nowrap gap-x-3 items-center p-3 transition ease-in-out hover:bg-secondary rounded-lg cursor-pointer my-2">
+        {/* <div className="flex flex-nowrap gap-x-3 items-center p-3 transition ease-in-out hover:bg-secondary rounded-lg cursor-pointer my-2">
           <IoDocumentTextOutline />
           Appointments
         </div>
@@ -123,13 +119,15 @@ const Dashboard = () => {
         <div className="flex flex-nowrap gap-x-3 items-center p-3 transition ease-in-out hover:bg-secondary rounded-lg cursor-pointer my-2">
           <CiSettings />
           Settings
-        </div>
+        </div> */}
 
         <button
-          className="bg-blue-600 w-full py-2 rounded-lg font-semibold mt-20"
+          className="bg-blue-600 w-full py-2 rounded-lg font-semibold mt-20 flex flex-nowrap gap-x-4 items-center justify-center"
           onClick={openDialog}
         >
-          New patient
+          <div>
+            <p>New patient</p>
+          </div>
         </button>
 
         <Dialog onClose={closeDialog} open={isOpenDialog} className="">
