@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import React from "react";
 import { patients } from "@/util/mockdata";
 import { IoHomeOutline } from "react-icons/io5";
@@ -16,6 +16,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import { Patient } from "@prisma/client";
 
 const Dashboard = () => {
   const [isOpenDialog, setIsOpenDialog] = useState(false);
@@ -25,6 +26,7 @@ const Dashboard = () => {
   const [email, setEmail] = useState("");
   const [Phone, setPhone] = useState("");
   const [insurance, setInsurance] = useState("");
+  const [patients, setPatients] = useState<Patient[] | null>([]);
 
   const openDialog = () => {
     setIsOpenDialog(true);
@@ -54,10 +56,30 @@ const Dashboard = () => {
       if (res.ok) {
         location.reload();
       }
-    } catch (error: any) {
+    } catch (error: any) {  
       console.error(`Something wrong when creating patient : ${error.message}`);
     }
   };
+
+  const handleFetchPatients = async () => {
+    try {
+      const res = await fetch("/api/patients", {
+        method: "GET",
+      });
+
+      const data: Patient[] = await res.json();
+
+      if (res.ok) {
+        setPatients(data);
+      }
+    } catch (error: any) {
+      console.error(`Failed to fetch patients : ${error.message}`);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchPatients();
+  }, []);
 
   return (
     <div className="grid grid-cols-4 m-10 gap-x-5">
@@ -108,6 +130,7 @@ const Dashboard = () => {
                     id="name"
                     className="rounded-md p-2 bg-primary font-semibold w-full col-span-2"
                     onChange={(e) => setName(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -119,6 +142,7 @@ const Dashboard = () => {
                     id="age"
                     className="rounded-md p-2 bg-primary font-semibold w-28 col-span-2"
                     onChange={(e) => setAge(parseInt(e.target.value))}
+                    required
                   />
                 </div>
 
@@ -129,6 +153,7 @@ const Dashboard = () => {
                     id="sex"
                     className="rounded-md p-2 bg-primary font-semibold w-full col-span-2"
                     onChange={(e) => setSex(e.target.value)}
+                    required
                   >
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -143,6 +168,19 @@ const Dashboard = () => {
                     id="email"
                     className="rounded-md p-2 bg-primary font-semibold w-full col-span-2"
                     onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-3 items-center mb-3">
+                  <label htmlFor="phone">Phone</label>
+                  <input
+                    type="string"
+                    name="phone"
+                    id="phone"
+                    className="rounded-md p-2 bg-primary font-semibold w-full col-span-2"
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
                   />
                 </div>
 
@@ -154,6 +192,7 @@ const Dashboard = () => {
                     id="insurance"
                     className="rounded-md p-2 bg-primary font-semibold w-full col-span-2"
                     onChange={(e) => setInsurance(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="flex justify-end gap-4 mt-10">
@@ -196,7 +235,7 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {patients.map((patient) => (
+            {patients?.map((patient) => (
               <TableRow key={patient.id} patient={patient} />
             ))}
           </tbody>
