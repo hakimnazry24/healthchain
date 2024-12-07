@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { patients } from "@/util/mockdata";
 import { Patient } from "@prisma/client";
@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { DialogPanel } from "@headlessui/react";
 import { DialogTitle } from "@headlessui/react";
+import Link from "next/link";
 
 const TableRow = ({ patient }: { patient: Patient }) => {
   const [isSureDelete, setIsSureDelete] = useState(false);
@@ -76,7 +77,14 @@ const TableRow = ({ patient }: { patient: Patient }) => {
   return (
     <>
       <tr>
-        <td className="p-5 border border-secondary">{patient.name}</td>
+        <td className="p-5 border border-secondary">
+          <Link
+            href={`/patient/${patient.id}`}
+            className="cursor-pointer hover:underline"
+          >
+            {patient.name}
+          </Link>
+        </td>
         <td className="p-5 border border-secondary">{patient.age}</td>
         <td className="p-5 border border-secondary">{patient.sex}</td>
         <td className="p-5 border border-secondary">{patient.email}</td>
@@ -86,7 +94,7 @@ const TableRow = ({ patient }: { patient: Patient }) => {
           <FaTrash
             className="inline-block mr-3 cursor-pointer"
             onClick={() => handleDeletePatient(patient.id)}
-          />{" "}
+          />
           <FaEdit
             className="inline-block cursor-pointer"
             onClick={() => openDialog()}
