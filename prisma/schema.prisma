@@ -13,62 +13,76 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-type Insurance {
-  provider     String
-  policyNumber String
-  coverateType String
-}
+// type Insurance {
+//   provider     String
+//   policyNumber String
+//   coverateType String
+// }
 
-type EmergencyContact {
-  name         String
-  relationship String
-  phone        String
-}
+// type EmergencyContact {
+//   name         String
+//   relationship String
+//   phone        String
+// }
 
-type PreviousSurgery {
-  surgery String
-  year    Int
-}
+// type PreviousSurgery {
+//   surgery String
+//   year    Int
+// }
 
-type MedicalHistory {
-  chronicCondition  String[]
-  previousSurgeries PreviousSurgery[]
-  allergies         String[]
-  familyHistory     String[]
-}
+// type MedicalHistory {
+//   chronicCondition  String[]
+//   previousSurgeries PreviousSurgery[]
+//   allergies         String[]
+//   familyHistory     String[]
+// }
 
-type CurrentMedication {
-  name      String
-  dosage    String
-  frequency String
-  startDate DateTime
-}
+// type CurrentMedication {
+//   name      String
+//   dosage    String
+//   frequency String
+//   startDate DateTime
+// }
 
-type Diagnosis {
-  primaryDiagnosis String
-  code             String
-  treatmentPlan    String
-}
+// type Diagnosis {
+//   primaryDiagnosis String
+//   code             String
+//   treatmentPlan    String
+// }
 
-type Immunization {
-  vaccine     String
-  date        DateTime
-  nextBooster DateTime
-}
+// type Immunization {
+//   vaccine     String
+//   date        DateTime
+//   nextBooster DateTime
+// }
 
 model Patient {
-  id                 String              @id @default(uuid()) @map("_id")
+  id                 String            @id @default(uuid()) @map("_id") // Unique identifier for each patient
   name               String
   age                Int
   sex                String
   email              String
   phone              String
-  emergencyContact   EmergencyContact
-  insurance          Insurance?
-  medicalHistory     MedicalHistory?
-  currentMedications CurrentMedication[]
-  immunization       Immunization[]
-  diagnoses          Diagnosis[]
+  insurance          String
+  registrationDate   DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  secondaryPhone     String?
+  languagePreference String?
+  address            String?
+  bloodType          String? // Nullable if no data provided
+  allergies          String?
+  currentMedication  String? // Nullable for optional data
+  chronicConditions  String? // Nullable for optional data
+  emergencyContact   EmergencyContact? // Storing as a JSON object for flexibility
+  notes              String? // Nullable for additional info
+  occupation         String?
+  maritalStatus      String?
+}
+
+type EmergencyContact {
+  emergencyContactName   String?
+  emergencyContactNumber String?
+  relationshipToPatient  String?
 }
 
 model User {
