@@ -95,10 +95,10 @@ const TableRow = ({ patient }: { patient: Patient }) => {
             className="inline-block mr-3 cursor-pointer"
             onClick={() => handleDeletePatient(patient.id)}
           />
-          <FaEdit
+          {/* <FaEdit
             className="inline-block cursor-pointer"
             onClick={() => openDialog()}
-          />
+          /> */}
         </td>
       </tr>
       <Dialog onClose={closeDialog} open={isOpenDialog} className="">

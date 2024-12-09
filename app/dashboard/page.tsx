@@ -104,22 +104,6 @@ const Dashboard = () => {
           <IoPeopleOutline />
           Patients
         </div>
-        {/* <div className="flex flex-nowrap gap-x-3 items-center p-3 transition ease-in-out hover:bg-secondary rounded-lg cursor-pointer my-2">
-          <IoDocumentTextOutline />
-          Appointments
-        </div>
-        <div className="flex flex-nowrap gap-x-3 items-center p-3 transition ease-in-out hover:bg-secondary rounded-lg cursor-pointer my-2">
-          <BsCreditCard2Back />
-          Billing
-        </div>
-        <div className="flex flex-nowrap gap-x-3 items-center p-3 transition ease-in-out hover:bg-secondary rounded-lg cursor-pointer my-2">
-          <TbReportAnalytics />
-          Reports
-        </div>
-        <div className="flex flex-nowrap gap-x-3 items-center p-3 transition ease-in-out hover:bg-secondary rounded-lg cursor-pointer my-2">
-          <CiSettings />
-          Settings
-        </div> */}
 
         <button
           className="bg-blue-600 w-full py-2 rounded-lg font-semibold mt-20 flex flex-nowrap gap-x-4 items-center justify-center"

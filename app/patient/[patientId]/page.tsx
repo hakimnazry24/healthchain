@@ -1,17 +1,8 @@
 "use client";
 import { Patient } from "@prisma/client";
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  FormEvent,
-  useEffect,
-  useState,
-} from "react";
+import Link from "next/link";
+import { ChangeEvent, useEffect, useState } from "react";
 import React from "react";
-
-interface FormState {
-  name: string;
-}
 
 const PatientPage = ({ params }: { params: { patientId: string } }) => {
   const patientId = params.patientId;
@@ -20,7 +11,6 @@ const PatientPage = ({ params }: { params: { patientId: string } }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccessUpdaet, setIsSuccessUpdaet] = useState(false);
 
-  const [Name, setName] = useState("");
   const [patientForm, setPatientForm] = useState<Patient>();
 
   const handleChange = (
@@ -86,6 +76,11 @@ const PatientPage = ({ params }: { params: { patientId: string } }) => {
           You are currently in Edit Mode
         </div>
       )}
+      <div className="mt-10">
+        <Link href={"/dashboard"}>Dashboard</Link> {">"}{" "}
+        <Link href={`/patient/${patient?.id}`}>Patient ID : {patient?.id}</Link>
+      </div>
+
       <div className="flex justify-between items-center mt-10">
         <div>
           <h1 className="text-2xl font-semibold">Patient Details</h1>
@@ -93,7 +88,9 @@ const PatientPage = ({ params }: { params: { patientId: string } }) => {
         </div>
 
         <div className="flex items-center gap-x-3">
-          {isSuccessUpdaet && <p className="text-green-500">Successfully update patient</p>}
+          {isSuccessUpdaet && (
+            <p className="text-green-500">Successfully update patient</p>
+          )}
           {isEditMode && (
             <button
               className="font-semibold text-white bg-green-500 rounded-md p-2"
@@ -324,7 +321,7 @@ const PatientPage = ({ params }: { params: { patientId: string } }) => {
           </label>
           <input
             onChange={handleChange}
-            defaultValue={patient?.emergencyContact?.emergencyContactName}
+            defaultValue={patient?.emergencyContact?.emergencyContactName || ""}
             disabled={!isEditMode}
             type="text"
             name="emergency_contact_name"
@@ -339,7 +336,9 @@ const PatientPage = ({ params }: { params: { patientId: string } }) => {
           </label>
           <input
             onChange={handleChange}
-            defaultValue={patient?.emergencyContact?.emergencyContactNumber}
+            defaultValue={
+              patient?.emergencyContact?.emergencyContactNumber || ""
+            }
             type="text"
             name="emergency_contact_phone_number"
             id="emergency_contact_phone_number"
@@ -354,7 +353,9 @@ const PatientPage = ({ params }: { params: { patientId: string } }) => {
           </label>
           <input
             onChange={handleChange}
-            defaultValue={patient?.emergencyContact?.relationshipToPatient}
+            defaultValue={
+              patient?.emergencyContact?.relationshipToPatient || ""
+            }
             disabled={!isEditMode}
             className="w-full text-black"
             type="text"
