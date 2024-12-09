@@ -13,33 +13,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+type Insurance {
+  provider     String
+  policyNumber String
+  coverateType String
+}
+
+type EmergencyContact {
+  name         String
+  relationship String
+  phone        String
+}
+
+type PreviousSurgery {
+  surgery String
+  year    Int
+}
+
+type MedicalHistory {
+  chronicCondition  String[]
+  previousSurgeries PreviousSurgery[]
+  allergies         String[]
+  familyHistory     String[]
+}
+
+type CurrentMedication {
+  name      String
+  dosage    String
+  frequency String
+  startDate DateTime
+}
+
+type Diagnosis {
+  primaryDiagnosis String
+  code             String
+  treatmentPlan    String
+}
+
+type Immunization {
+  vaccine     String
+  date        DateTime
+  nextBooster DateTime
+}
+
 model Patient {
-  id                 String           @id @default(uuid()) @map("_id")
+  id                 String              @id @default(uuid()) @map("_id")
   name               String
   age                Int
   sex                String
   email              String
   phone              String
-  insurance          String
-  secondaryPhone     String?
-  languagePreference String?
-  address            String?
-  bloodType          String?
-  allergies          String?
-  currentMedication  String?
-  chronicConditions  String?
-  emergencyContact   EmergencyContact?
-  registrationDate   DateTime         @default(now())
-  updatedAt          DateTime         @updatedAt
-  notes              String?
-  occupation         String?
-  maritalStatus      String?
-}
-
-type EmergencyContact {
-  emergencyContactName   String?
-  emergencyContactNumber String?
-  relationshipToPatient  String?
+  emergencyContact   EmergencyContact
+  insurance          Insurance?
+  medicalHistory     MedicalHistory?
+  currentMedications CurrentMedication[]
+  immunization       Immunization[]
+  diagnoses          Diagnosis[]
 }
 
 model User {
