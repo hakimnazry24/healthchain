@@ -2,7 +2,7 @@ const privateKey = process.env.WALLET_PRIVATE_KEY;
 import { provider } from "./provider";
 import { contractABI } from "./provider";
 import { contractAddress } from "./provider";
-
+import { ethers } from "ethers";
 
 async function updateRecord(recordId, updatedData) {
   try {
