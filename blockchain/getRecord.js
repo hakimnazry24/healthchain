@@ -6,7 +6,6 @@ import { contractABI } from "./provider";
 import { contractAddress } from "./provider";
 
 async function getRecord(patientId) {
-
   try {
     const contract = new ethers.Contract(
       contractAddress,

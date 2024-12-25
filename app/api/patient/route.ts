@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 import * as crypto from "crypto";
 import createRecord from "@/blockchain/createRecord";
 import updateRecord from "@/blockchain/updateRecord";
+import deleteRecord from "@/blockchain/deleteRecord";
+
 // api for delete patient
 export async function DELETE(req: Request) {
   try {
@@ -18,8 +20,11 @@ export async function DELETE(req: Request) {
     });
 
     if (deletedPatient) {
+      // const patientId = deletedPatient.id;
+      // const receipt = await deleteRecord(patientId);
+
       return NextResponse.json(
-        {},
+        {  },
         { status: 200, statusText: "Succesfully delete patienet" }
       );
     }
@@ -127,6 +132,7 @@ export async function POST(req: Request) {
         .update(parsedData)
         .digest("hex");
 
+        // add hashed record in blockchain
       const receipt = await createRecord(patientId, patientName, recordHash);
 
       return NextResponse.json({ message: receipt }, { status: 200 });
