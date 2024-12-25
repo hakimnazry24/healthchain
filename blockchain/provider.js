@@ -9,6 +9,7 @@ export const contractAddress = "0xC3123c961eB4D644Ba12e535420C1032A07F7FD3";
 export const contractABI = [
   {
     inputs: [
+      { internalType: "string", name: "_patientId", type: "string" },
       { internalType: "string", name: "_patientName", type: "string" },
       { internalType: "string", name: "_data", type: "string" },
     ],

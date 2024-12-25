@@ -1,7 +1,10 @@
 import prisma from "@/prisma/db";
 import { Patient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import * as crypto from "crypto";
+import createRecord from "@/blockchain/createRecord";
 
+// api for delete patient
 export async function DELETE(req: Request) {
   try {
     const formData = await req.formData();
@@ -25,6 +28,7 @@ export async function DELETE(req: Request) {
   }
 }
 
+// api for update patient
 export async function PATCH(req: Request) {
   try {
     const formData = await req.formData();
@@ -82,6 +86,7 @@ export async function PATCH(req: Request) {
   }
 }
 
+// api for create patient
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
@@ -105,8 +110,18 @@ export async function POST(req: Request) {
     });
 
     if (patient) {
+      const patientId = patient.id;
+      const patientName = patient.name;
+      const parsedData = JSON.stringify(patient);
+      const recordHash = crypto
+        .createHash("sha256")
+        .update(parsedData)
+        .digest("hex");
+
+      const receipt = await createRecord(patientId, patientName, recordHash);
+
       return NextResponse.json(
-        { message: "Patient successfully createad" },
+        { message: receipt },
         { status: 200 }
       );
     } else {
@@ -117,6 +132,7 @@ export async function POST(req: Request) {
   }
 }
 
+// api for get patient
 export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
